@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brain Injury ID Card Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0a7c84;--td:#065a60;--tdk:#044448;
+  --tl:#e0f4f5;--tm:#b2e0e3;
+  --bg:#f0f4f5;--sf:#fff;--sf2:#f8fafa;
+  --bd:#d8e3e5;--tx:#1a2325;--mu:#4e6367;--fa:#9aabb0;
+  --r:10px;
+  --fb:"Inter",-apple-system,sans-serif;
+  --fdisp:"Merriweather",Georgia,serif;
+  --CW:253px;--CH:159px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--tx);font-size:16px;line-height:1.6;min-height:100dvh}
+.hdr{background:linear-gradient(135deg,var(--tdk),var(--td) 60%,var(--teal));color:#fff;padding:2.2rem 2rem 2rem;text-align:center;box-shadow:0 2px 12px rgba(4,68,72,.3)}
+.hdr h1{font-family:var(--fdisp);font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;margin-bottom:.35rem;line-height:1.15}
+.hdr p{font-size:.95rem;opacity:.82;max-width:520px;margin:0 auto}
+.wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:1.75rem;max-width:1180px;margin:2rem auto;padding:0 1.25rem 3rem;align-items:start}
+@media(max-width:920px){.wrap{grid-template-columns:1fr}}
+.panel{background:var(--sf);border-radius:var(--r);box-shadow:0 2px 12px rgba(10,60,65,.09);overflow:hidden}
+.pnl-hdr{background:var(--td);color:#fff;padding:.78rem 1.4rem;font-family:var(--fdisp);font-size:.95rem;font-weight:700}
+.pnl-body{padding:1.35rem}
+.stitle{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--td);margin-bottom:.8rem}
+.sep{border:none;border-top:1.5px solid var(--tl);margin:1.2rem 0}
+.fld{margin-bottom:.85rem}
+.fld label{display:block;font-size:.73rem;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.055em;margin-bottom:.28rem}
+.fld input,.fld textarea{width:100%;padding:.52rem .78rem;border:1.5px solid var(--bd);border-radius:7px;font-size:.9rem;font-family:var(--fb);color:var(--tx);background:var(--sf2);transition:border-color .15s,box-shadow .15s;line-height:1.5}
+.fld input:focus,.fld textarea:focus{outline:none;border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(10,124,132,.13)}
+.fld input::placeholder,.fld textarea::placeholder{color:var(--fa)}
+.fld textarea{min-height:75px;resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.sg{margin-bottom:.9rem}
+.sgt{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fff;background:var(--teal);padding:.22rem .62rem;border-radius:4px;margin-bottom:.4rem;display:inline-block}
+.sl{display:flex;flex-direction:column;gap:.1rem}
+.si{display:flex;align-items:flex-start;gap:.45rem;cursor:pointer;padding:.22rem .4rem;border-radius:6px;transition:background .12s;user-select:none}
+.si:hover{background:var(--tl)}
+.si input[type=checkbox]{accent-color:var(--teal);margin-top:.26rem;width:14px;height:14px;flex-shrink:0;cursor:pointer}
+.si span{font-size:.85rem;color:var(--tx);line-height:1.4}
+.clin-box{background:var(--sf2);border:1.5px solid var(--tm);border-radius:8px;padding:.9rem 1rem;margin-top:.7rem}
+canvas#sigc{border:1.5px solid var(--bd);border-radius:7px;background:#fff;cursor:crosshair;display:block;width:100%;touch-action:none}
+.sig-clr{font-size:.76rem;color:var(--teal);background:none;border:none;cursor:pointer;padding:.18rem 0;font-family:var(--fb);font-weight:600;margin-top:.28rem;display:block}
+.sig-clr:hover{text-decoration:underline}
+.btnrow{display:flex;gap:.55rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{padding:.52rem 1.1rem;border-radius:7px;font-size:.85rem;font-weight:600;cursor:pointer;border:none;font-family:var(--fb);transition:background .15s,transform .1s;display:inline-flex;align-items:center;gap:.35rem;line-height:1}
+.btn:active{transform:scale(.96)}
+.btn-p{background:var(--td);color:#fff}.btn-p:hover{background:var(--tdk)}
+.btn-s{background:var(--tl);color:var(--td);border:1.5px solid var(--tm)}.btn-s:hover{background:var(--tm)}
+.btn-g{background:transparent;color:var(--mu);border:1.5px solid var(--bd)}.btn-g:hover{background:var(--bg)}
+.btn-ot{background:transparent;color:var(--td);border:1.5px solid var(--teal)}.btn-ot:hover{background:var(--tl)}
+.prevcol{position:sticky;top:1.5rem;display:flex;flex-direction:column;gap:1.25rem}
+.cards2{display:flex;gap:.75rem;justify-content:center;align-items:flex-start;flex-wrap:wrap}
+.cslot{display:flex;flex-direction:column;align-items:center}
+.cslot-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:.32rem}
+.card{width:var(--CW);height:var(--CH);border:2px solid var(--td);border-radius:8px;overflow:hidden;box-shadow:0 6px 24px rgba(10,60,65,.14);background:#fff;display:flex;flex-direction:column;flex-shrink:0}
+.cf-hd{background:var(--td);color:#fff;text-align:center;padding:4px 7px 3px;flex-shrink:0}
+.cf-hd .ct{font-family:var(--fdisp);font-size:7px;font-weight:700;letter-spacing:.04em;line-height:1.2}
+.cf-hd .cs{font-size:5.5px;opacity:.85;margin-top:1.5px;line-height:1.3}
+.cf-bd{padding:5px 8px 4px;flex:1;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.cf-fields{display:flex;flex-direction:column;gap:4px}
+.cf-lbl{font-size:4.8px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--td);line-height:1;margin-bottom:1px}
+.cf-val{font-size:7px;color:var(--tx);font-weight:500;line-height:1.25;word-break:break-word}
+.cf-val.empty{color:var(--fa);font-style:italic;font-weight:400}
+.cf-clin{border-top:.5px solid var(--bd);padding-top:3px;display:none;flex-direction:column;gap:1px}
+.cf-clin.show{display:flex}
+.cf-clinprov{font-size:5.5px;color:var(--tx);font-weight:600}
+.cf-sigline{border-bottom:.5px solid var(--tx);margin:5px 0 1px}
+.cf-siglbl{font-size:3.8px;color:var(--mu);text-align:center}
+.cf-ft{background:var(--tl);padding:2.5px 8px;font-size:5px;color:var(--td);text-align:center;font-style:italic;line-height:1.3;flex-shrink:0}
+.cb-hd{background:var(--teal);color:#fff;text-align:center;padding:4px 7px 3px;font-family:var(--fdisp);font-size:6.8px;font-weight:700;letter-spacing:.04em;flex-shrink:0}
+.cb-bd{padding:5px 8px;flex:1;overflow:hidden;display:flex;flex-direction:column;gap:3px}
+.cb-lbl{font-size:4.8px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--td);margin-bottom:1.5px}
+.cb-val{font-size:6.2px;color:var(--tx);line-height:1.38;word-break:break-word}
+.cb-val.empty{color:var(--fa);font-style:italic;font-weight:400}
+.cb-div{border:none;border-top:.5px solid var(--bd);margin:1px 0}
+.cb-ft{background:var(--tl);padding:2.5px 8px;font-size:4.8px;color:var(--td);text-align:center;font-style:italic;flex-shrink:0}
+.prevact{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:.75rem}
+.howto{font-size:.875rem;color:var(--mu);line-height:1.65}
+.howto ol{padding-left:1.15rem;display:flex;flex-direction:column;gap:.4rem}
+.howto strong{color:var(--td)}
+@media print{
+  @page{size:7.25in 2.6in landscape;margin:.15in .3in}
+  body>*:not(#psheet){display:none!important}
+  #psheet{display:flex!important;flex-direction:row;align-items:stretch;justify-content:center;width:100%;gap:0}
+  .pcrd{width:3.375in;height:2.125in;border:1pt solid #065a60;background:#fff;display:flex;flex-direction:column;flex-shrink:0;page-break-inside:avoid}
+  .pfold{width:.04in;height:2.125in;flex-shrink:0;background:repeating-linear-gradient(to bottom,#aaa 0,#aaa 3pt,transparent 3pt,transparent 6pt)}
+  .pch{background:#065a60!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#fff!important;text-align:center;padding:.07in .1in .05in;flex-shrink:0}
+  .pct{font-family:"Merriweather",Georgia,serif;font-size:9pt;font-weight:700;letter-spacing:.03em;line-height:1.2}
+  .pcs{font-size:6pt;opacity:.88;margin-top:.025in;line-height:1.3}
+  .pcbd{padding:.06in .12in .05in;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+  .pcfields{display:flex;flex-direction:column;gap:.05in}
+  .pclbl{font-size:5.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#065a60;line-height:1;margin-bottom:.01in}
+  .pcval{font-size:8pt;color:#1a2325;font-weight:500;line-height:1.2}
+  .pc-clin{border-top:.5pt solid #d8e3e5;padding-top:.03in;display:none;flex-direction:column;gap:.015in}
+  .pc-clin.show{display:flex}
+  .pc-clinprov{font-size:6pt;color:#1a2325;font-weight:600}
+  .pc-sigline{border-bottom:.5pt solid #1a2325;margin:.06in 0 .015in}
+  .pc-siglbl{font-size:4pt;color:#4e6367;text-align:center}
+  .pcf{background:#e0f4f5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:.03in .1in;font-size:5.5pt;color:#065a60;text-align:center;font-style:italic;flex-shrink:0}
+  .pcbh{background:#0a7c84!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#fff!important;text-align:center;padding:.06in .1in;font-family:"Merriweather",Georgia,serif;font-size:8.5pt;font-weight:700;flex-shrink:0}
+  .pcbb{padding:.06in .12in;flex:1;overflow:hidden;display:flex;flex-direction:column;gap:.04in}
+  .pcbs{display:flex;flex-direction:column}
+  .pcbl{font-size:5.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#065a60;margin-bottom:.015in}
+  .pcbv{font-size:7pt;color:#1a2325;line-height:1.38}
+  .pcbdiv{border:none;border-top:.5pt solid #d8e3e5;margin:.02in 0}
+  .pcbf{background:#e0f4f5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:.03in .1in;font-size:5pt;color:#065a60;text-align:center;font-style:italic;flex-shrink:0}
+  .pc-sigback{display:none;flex-direction:column}
+  .pc-sigback.show{display:flex}
+  .pc-signm{font-size:6pt;color:#1a2325;font-weight:600}
+  .pc-sigimg{max-width:1.4in;height:.3in;display:block;object-fit:contain;margin-top:.02in}
+}
+#psheet{display:none}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <h1>Brain Injury ID Card Builder</h1>
+  <p>Fill in the form to create a personalized, printable wallet ID card.</p>
+</header>
+<div class="wrap">
+  <div class="panel">
+    <div class="pnl-hdr">Build Your Card</div>
+    <div class="pnl-body">
+      <div class="stitle">Personal Information</div>
+      <div class="fld"><label for="fn">Full Name</label><input type="text" id="fn" placeholder="e.g. Jordan Smith"></div>
+      <div class="frow">
+        <div class="fld"><label for="fe">Emergency Contact</label><input type="text" id="fe" placeholder="Contact name"></div>
+        <div class="fld"><label for="fp">Emergency Phone</label><input type="tel" id="fp" placeholder="(555) 000-0000"></div>
+      </div>
+      <hr class="sep">
+      <div class="stitle">Select Symptoms</div>
+      <div class="sg"><div class="sgt">Communication</div><div class="sl">
+        <label class="si"><input type="checkbox" name="sx"><span>Slurred speech</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Hearing / auditory processing impairment</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Use assistive listening devices</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Difficulty understanding / following instructions</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Difficulty thinking of words / organizing thoughts</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Difficulty with reading / writing</span></label>
+      </div></div>
+      <div class="sg"><div class="sgt">Cognitive</div><div class="sl">
+        <label class="si"><input type="checkbox" name="sx"><span>Decreased concentration / attention span</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Memory lapses</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Confusion / disorientation, especially with stress</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Slowed processing / response time</span></label>
+      </div></div>
+      <div class="sg"><div class="sgt">Physical</div><div class="sl">
+        <label class="si"><input type="checkbox" name="sx"><span>Impaired balance / coordination</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Weakness on the left side of my body</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Weakness on the right side of my body</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Difficulty walking / standing for long periods</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Sensitivity to bright / flashing lights</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Sensitivity to loud / repetitive sounds</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Seizures / increased seizure risk</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Dizziness</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Problems with my vision</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Blind spots in my vision</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Uneven pupil dilation</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Accompanied by trained service animal</span></label>
+      </div></div>
+      <div class="sg"><div class="sgt">Emotional</div><div class="sl">
+        <label class="si"><input type="checkbox" name="sx"><span>Anxiety / quickly overwhelmed</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Depression / sadness</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Impulsive behaviors</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Decreased emotional control (laughter, crying, yelling)</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Quickly become agitated, angry, impatient</span></label>
+        <label class="si"><input type="checkbox" name="sx"><span>Aggressive behaviors</span></label>
+      </div></div>
+      <hr class="sep">
+      <div class="fld"><label for="fc">Additional / Custom Symptoms</label><textarea id="fc" placeholder="Add any symptoms not listed above, one per line or commas..."></textarea></div>
+      <div class="fld"><label for="fs">Strategies That Help Me</label><textarea id="fs" placeholder="e.g. Please speak slowly and clearly, give me extra time to respond..."></textarea></div>
+      <hr class="sep">
+      <button class="btn btn-ot" id="btnclin">&#9997;&#65039; Add Clinician Signature Space</button>
+      <div id="clinsec" class="clin-box" style="display:none">
+        <div class="stitle" style="margin-bottom:.55rem">Clinician Signature</div>
+        <div class="fld"><label for="fcn">Care Provider Name (optional)</label><input type="text" id="fcn" placeholder="e.g. Dr. Jane Doe, SLP"></div>
+        <div class="fld">
+          <label>Signature</label>
+          <canvas id="sigc" height="80"></canvas>
+          <button class="sig-clr" id="btnclr">&#10005; Clear signature</button>
+        </div>
+      </div>
+      <div class="btnrow">
+        <button class="btn btn-p" id="btnprint">&#128424;&#65039; Print Card</button>
+        <button class="btn btn-s" id="btnpdf">&#128190; Save as PDF</button>
+        <button class="btn btn-s" id="btnsave">&#128229; Save Card</button>
+        <button class="btn btn-g" id="btnclear">&#128465;&#65039; Clear All</button>
+      </div>
+    </div>
+  </div>
+  <div class="prevcol">
+    <div class="panel">
+      <div class="pnl-hdr">Card Preview &mdash; Front &amp; Back</div>
+      <div class="pnl-body">
+        <div class="cards2">
+          <div class="cslot">
+            <div class="cslot-lbl">&#9664; Front</div>
+            <div class="card">
+              <div class="cf-hd">
+                <div class="ct">BRAIN INJURY<br>IDENTIFICATION CARD</div>
+                <div class="cs">I have a brain injury which may affect my behavior and communication.</div>
+              </div>
+              <div class="cf-bd">
+                <div class="cf-fields">
+                  <div><div class="cf-lbl">Name</div><div class="cf-val empty" id="pvn">Your Name</div></div>
+                  <div><div class="cf-lbl">Emergency Contact</div><div class="cf-val empty" id="pve">Not specified</div></div>
+                  <div><div class="cf-lbl">Emergency Phone</div><div class="cf-val empty" id="pvp">Not specified</div></div>
+                </div>
+                <div class="cf-clin" id="pvclin">
+                  <div class="cf-lbl">Clinician / Care Provider</div>
+                  <div class="cf-clinprov" id="pvprov"></div>
+                  <div class="cf-sigline"></div>
+                  <div class="cf-siglbl">Authorized Signature</div>
+                </div>
+              </div>
+              <div class="cf-ft">To prevent misunderstandings, please see reverse for symptoms.</div>
+            </div>
+          </div>
+          <div class="cslot">
+            <div class="cslot-lbl">Back &#9654;</div>
+            <div class="card">
+              <div class="cb-hd">SYMPTOMS &amp; STRATEGIES</div>
+              <div class="cb-bd">
+                <div><div class="cb-lbl">My symptoms may include:</div><div class="cb-val empty" id="pvs">Select symptoms to display here</div></div>
+                <div class="cb-div"></div>
+                <div><div class="cb-lbl">Strategies that help me:</div><div class="cb-val empty" id="pvst">No strategies added yet</div></div>
+              </div>
+              <div class="cb-ft">Please be patient. Your understanding makes a difference.</div>
+            </div>
+          </div>
+        </div>
+        <div class="prevact">
+          <button class="btn btn-p" id="btnprint2">&#128424;&#65039; Print Card</button>
+          <button class="btn btn-s" id="btnpdf2">&#128190; Save as PDF</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="pnl-hdr">How to Use</div>
+      <div class="pnl-body howto"><ol>
+        <li>Fill in name and emergency contact info above.</li>
+        <li>Check all symptoms that apply; add custom ones below.</li>
+        <li>Describe strategies that help you communicate.</li>
+        <li>Toggle <strong>Add Clinician Signature Space</strong> to add a signature line at the bottom of the front card.</li>
+        <li>Click <strong>Print Card</strong>. Fold on the dashed line for a wallet-sized card.</li>
+      </ol></div>
+    </div>
+  </div>
+</div>
+<div id="psheet">
+  <div class="pcrd">
+    <div class="pch"><div class="pct">BRAIN INJURY<br>IDENTIFICATION CARD</div><div class="pcs">I have a brain injury which may affect my behavior and communication.</div></div>
+    <div class="pcbd">
+      <div class="pcfields">
+        <div><div class="pclbl">Name</div><div class="pcval" id="pcn"></div></div>
+        <div><div class="pclbl">Emergency Contact</div><div class="pcval" id="pce"></div></div>
+        <div><div class="pclbl">Emergency Phone</div><div class="pcval" id="pcp"></div></div>
+      </div>
+      <div class="pc-clin" id="pcclin">
+        <div class="pclbl">Clinician / Care Provider</div>
+        <div class="pc-clinprov" id="pcprov"></div>
+        <div class="pc-sigline"></div>
+        <div class="pc-siglbl">Authorized Signature</div>
+      </div>
+    </div>
+    <div class="pcf">To prevent misunderstandings, please see reverse for symptoms.</div>
+  </div>
+  <div class="pfold"></div>
+  <div class="pcrd">
+    <div class="pcbh">SYMPTOMS &amp; STRATEGIES</div>
+    <div class="pcbb">
+      <div class="pcbs"><div class="pcbl">My symptoms may include:</div><div class="pcbv" id="pcsy"></div></div>
+      <div class="pcbdiv"></div>
+      <div class="pcbs"><div class="pcbl">Strategies that help me:</div><div class="pcbv" id="pcst"></div></div>
+      <div class="pc-sigback" id="pcsib">
+        <div class="pcbl">Care Provider</div>
+        <div class="pc-signm" id="pccn"></div>
+        <img id="pcsi" src="" alt="Signature" class="pc-sigimg" style="display:none">
+      </div>
+    </div>
+    <div class="pcbf">Please be patient. Your understanding makes a difference.</div>
+  </div>
+</div>
+<!-- ALL JS IS INLINE AT BOTTOM — no DOMContentLoaded needed, runs after HTML is parsed -->
+<script>
+var clinOn=false, sigC, sigX, sigDrawing=false, sigHas=false;
+
+function elId(id){ return document.getElementById(id); }
+function getVal(id){ var e=elId(id); return e ? e.value.trim() : ''; }
+
+function setVal(id, text, fallback, base){
+  var e=elId(id);
+  if(!e) return;
+  if(text){ e.textContent=text; e.className=base; }
+  else{ e.textContent=fallback; e.className=base+' empty'; }
+}
+
+function updateCard(){
+  setVal('pvn',  getVal('fn'), 'Your Name',       'cf-val');
+  setVal('pve',  getVal('fe'), 'Not specified',    'cf-val');
+  setVal('pvp',  getVal('fp'), 'Not specified',    'cf-val');
+  var chk=[];
+  document.querySelectorAll('input[name="sx"]:checked').forEach(function(c){
+    chk.push(c.nextElementSibling.textContent.trim());
+  });
+  var cust=getVal('fc');
+  if(cust) cust.split(/[\n,]+/).forEach(function(s){ s=s.trim(); if(s) chk.push(s); });
+  setVal('pvs',  chk.length ? chk.join(' \u2022 ') : '', 'Select symptoms to display here', 'cb-val');
+  setVal('pvst', getVal('fs'), 'No strategies added yet', 'cb-val');
+  var cl=elId('pvclin');
+  if(clinOn){ cl.className='cf-clin show'; elId('pvprov').textContent=getVal('fcn')||''; }
+  else{ cl.className='cf-clin'; }
+}
+
+function initSig(){
+  sigC=elId('sigc'); if(!sigC) return;
+  sigX=sigC.getContext('2d');
+  sigC.width=sigC.offsetWidth||300; sigC.height=80;
+  sigX.strokeStyle='#1a2325'; sigX.lineWidth=1.8; sigX.lineCap='round'; sigX.lineJoin='round';
+  function pos(e){ var r=sigC.getBoundingClientRect(),s=e.touches?e.touches[0]:e; return {x:(s.clientX-r.left)*(sigC.width/r.width),y:(s.clientY-r.top)*(sigC.height/r.height)}; }
+  sigC.onmousedown=function(e){ sigDrawing=true; var p=pos(e); sigX.beginPath(); sigX.moveTo(p.x,p.y); };
+  sigC.onmousemove=function(e){ if(!sigDrawing)return; var p=pos(e); sigX.lineTo(p.x,p.y); sigX.stroke(); sigHas=true; };
+  sigC.onmouseup=function(){ sigDrawing=false; };
+  sigC.onmouseleave=function(){ sigDrawing=false; };
+  sigC.addEventListener('touchstart',function(e){ e.preventDefault(); sigDrawing=true; var p=pos(e); sigX.beginPath(); sigX.moveTo(p.x,p.y); },{passive:false});
+  sigC.addEventListener('touchmove',function(e){ e.preventDefault(); if(!sigDrawing)return; var p=pos(e); sigX.lineTo(p.x,p.y); sigX.stroke(); sigHas=true; },{passive:false});
+  sigC.addEventListener('touchend',function(){ sigDrawing=false; });
+}
+
+function clearSig(){ if(sigX) sigX.clearRect(0,0,sigC.width,sigC.height); sigHas=false; }
+
+function toggleClin(){
+  clinOn=!clinOn;
+  var sec=elId('clinsec'), btn=elId('btnclin');
+  if(clinOn){
+    sec.style.display='block';
+    btn.textContent='\u2715 Remove Clinician Signature Space';
+    btn.className='btn btn-g';
+    setTimeout(initSig,60);
+  } else {
+    sec.style.display='none';
+    btn.textContent='\u270D\uFE0F Add Clinician Signature Space';
+    btn.className='btn btn-ot';
+    clearSig();
+    var fcn=elId('fcn'); if(fcn) fcn.value='';
+  }
+  updateCard();
+}
+
+function populatePrint(){
+  elId('pcn').textContent=getVal('fn')||'(not provided)';
+  elId('pce').textContent=getVal('fe')||'(not provided)';
+  elId('pcp').textContent=getVal('fp')||'(not provided)';
+  var chk=[];
+  document.querySelectorAll('input[name="sx"]:checked').forEach(function(c){ chk.push(c.nextElementSibling.textContent.trim()); });
+  var cust=getVal('fc');
+  if(cust) cust.split(/[\n,]+/).forEach(function(s){ s=s.trim(); if(s) chk.push(s); });
+  elId('pcsy').textContent=chk.length?chk.join(' \u2022 '):'(none selected)';
+  elId('pcst').textContent=getVal('fs')||'(none provided)';
+  if(clinOn){
+    var cn=getVal('fcn');
+    elId('pcclin').className='pc-clin show';
+    elId('pcprov').textContent=cn||'';
+    elId('pcsib').className='pc-sigback show';
+    elId('pccn').textContent=cn||'';
+    var img=elId('pcsi');
+    if(sigHas&&sigC){ img.src=sigC.toDataURL(); img.style.display='block'; } else { img.style.display='none'; }
+  } else {
+    elId('pcclin').className='pc-clin';
+    elId('pcsib').className='pc-sigback';
+  }
+}
+
+function doPrint(){ populatePrint(); window.print(); }
+function savePDF(){ alert('To save as PDF:\n1. Click Print Card\n2. Set Destination to "Save as PDF"\n3. Set orientation to Landscape\n4. Click Save'); }
+function saveCard(){
+  var data={ name:getVal('fn'), emergencyContact:getVal('fe'), emergencyPhone:getVal('fp'), customSymptoms:getVal('fc'), strategies:getVal('fs'), clinicianName:clinOn?getVal('fcn'):null, symptoms:[] };
+  document.querySelectorAll('input[name="sx"]:checked').forEach(function(c){ data.symptoms.push(c.nextElementSibling.textContent.trim()); });
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='brain-injury-id-card.json'; a.click(); URL.revokeObjectURL(a.href);
+}
+function clearAll(){
+  if(!confirm('Clear all fields and start over?')) return;
+  ['fn','fe','fp','fc','fs','fcn'].forEach(function(id){ var e=elId(id); if(e) e.value=''; });
+  document.querySelectorAll('input[name="sx"]').forEach(function(c){ c.checked=false; });
+  if(clinOn) clearSig();
+  updateCard();
+}
+
+// Wire inputs — placed here after DOM so elements exist, no DOMContentLoaded needed
+elId('fn').addEventListener('input', updateCard);
+elId('fe').addEventListener('input', updateCard);
+elId('fp').addEventListener('input', updateCard);
+elId('fc').addEventListener('input', updateCard);
+elId('fs').addEventListener('input', updateCard);
+elId('fcn').addEventListener('input', updateCard);
+document.querySelectorAll('input[name="sx"]').forEach(function(cb){ cb.addEventListener('change', updateCard); });
+elId('btnclin').addEventListener('click', toggleClin);
+elId('btnclr').addEventListener('click', clearSig);
+elId('btnprint').addEventListener('click', doPrint);
+elId('btnprint2').addEventListener('click', doPrint);
+elId('btnpdf').addEventListener('click', savePDF);
+elId('btnpdf2').addEventListener('click', savePDF);
+elId('btnsave').addEventListener('click', saveCard);
+elId('btnclear').addEventListener('click', clearAll);
+
+// Run once on load to set initial state
+updateCard();
+</script>
+</body>
+</html>
