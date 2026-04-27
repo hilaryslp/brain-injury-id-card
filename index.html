@@ -66,12 +66,15 @@ canvas#sigc{border:1.5px solid var(--bd);border-radius:7px;background:#fff;curso
 .cf-hd .cs{font-size:5.5px;opacity:.85;margin-top:1.5px;line-height:1.3}
 .cf-bd{padding:5px 8px 4px;flex:1;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
 .cf-fields{display:flex;flex-direction:column;gap:4px}
+.cf-topgrid{display:flex;gap:6px;align-items:flex-start}
+.cf-leftcol{flex:1;min-width:0}
+.cf-rightcol{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .cf-lbl{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--td);line-height:1;margin-bottom:1px}
 .cf-val{font-size:10px;color:var(--tx);font-weight:500;line-height:1.25;word-break:break-word}
 .cf-val.empty{color:var(--fa);font-style:italic;font-weight:400}
 .cf-clin{border-top:.5px solid var(--bd);padding-top:3px;display:none;flex-direction:column;gap:1px}
 .cf-clin.show{display:flex}
-.cf-clinprov{font-size:5.5px;color:var(--tx);font-weight:600}
+.cf-clinprov{font-size:9px;color:var(--tx);font-weight:600}
 .cf-sigline{border-bottom:.5px solid var(--tx);margin:5px 0 1px}
 .cf-siglbl{font-size:3.8px;color:var(--mu);text-align:center}
 .cf-ft{background:var(--tl);padding:2.5px 8px;font-size:5px;color:var(--td);text-align:center;font-style:italic;line-height:1.3;flex-shrink:0}
@@ -132,9 +135,11 @@ canvas#sigc{border:1.5px solid var(--bd);border-radius:7px;background:#fff;curso
       <div class="stitle">Personal Information</div>
       <div class="fld"><label for="fn">Full Name</label><input type="text" id="fn" placeholder="e.g. Jordan Smith"></div>
       <div class="frow">
-        <div class="fld"><label for="fe">Emergency Contact</label><input type="text" id="fe" placeholder="Contact name"></div>
-        <div class="fld"><label for="fp">Emergency Phone</label><input type="tel" id="fp" placeholder="(555) 000-0000"></div>
-      </div>
+  <div class="fld"><label for="fe">Emergency Contact</label><input type="text" id="fe" placeholder="Contact name"></div>
+</div>
+<div class="frow">
+  <div class="fld"><label for="fp">Emergency Phone</label><input type="tel" id="fp" placeholder="(555) 000-0000"></div>
+</div>
       <hr class="sep">
       <div class="stitle">Select Symptoms</div>
       <div class="sg"><div class="sgt">Communication</div><div class="sl">
@@ -209,10 +214,13 @@ canvas#sigc{border:1.5px solid var(--bd);border-radius:7px;background:#fff;curso
               </div>
               <div class="cf-bd">
                 <div class="cf-fields">
-                  <div><div class="cf-lbl">Name</div><div class="cf-val empty" id="pvn">Your Name</div></div>
-                  <div><div class="cf-lbl">Emergency Contact</div><div class="cf-val empty" id="pve">Not specified</div></div>
-                  <div><div class="cf-lbl">Emergency Phone</div><div class="cf-val empty" id="pvp">Not specified</div></div>
-                </div>
+<div class="cf-topgrid">
+  <div class="cf-leftcol"><div class="cf-lbl">Name</div><div class="cf-val empty" id="pvn">Your Name</div></div>
+  <div class="cf-rightcol">
+    <div><div class="cf-lbl">Emergency Contact</div><div class="cf-val empty" id="pve">Not specified</div></div>
+    <div><div class="cf-lbl">Emergency Phone</div><div class="cf-val empty" id="pvp">Not specified</div></div>
+  </div>
+</div>                </div>
                 <div class="cf-clin" id="pvclin">
                   <div class="cf-lbl">Clinician / Care Provider</div>
                   <div class="cf-clinprov" id="pvprov"></div>
