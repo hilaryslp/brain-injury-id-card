@@ -62,8 +62,8 @@ canvas#sigc{border:1.5px solid var(--bd);border-radius:7px;background:#fff;curso
 .cslot-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:.32rem}
 .card{width:var(--CW);height:var(--CH);border:2px solid var(--td);border-radius:8px;overflow:hidden;box-shadow:0 6px 24px rgba(10,60,65,.14);background:#fff;display:flex;flex-direction:column;flex-shrink:0}
 .cf-hd{background:var(--td);color:#fff;text-align:center;padding:4px 7px 3px;flex-shrink:0}
-.cf-hd .ct{font-family:var(--fdisp);font-size:7px;font-weight:700;letter-spacing:.04em;line-height:1.2}
-.cf-hd .cs{font-size:5.5px;opacity:.85;margin-top:1.5px;line-height:1.3}
+.cf-hd .ct{font-family:var(--fdisp);font-size:8px;font-weight:700;letter-spacing:.04em;line-height:1.2}
+.cf-hd .cs{font-size:6px;opacity:.85;margin-top:1.5px;line-height:1.3}
 .cf-bd{padding:5px 8px 4px;flex:1;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
 .cf-fields{display:flex;flex-direction:column;gap:4px}
 .cf-topgrid{display:flex;gap:6px;align-items:flex-start}
@@ -72,12 +72,12 @@ canvas#sigc{border:1.5px solid var(--bd);border-radius:7px;background:#fff;curso
 .cf-lbl{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--td);line-height:1;margin-bottom:1px}
 .cf-val{font-size:10px;color:var(--tx);font-weight:500;line-height:1.25;word-break:break-word}
 .cf-val.empty{color:var(--fa);font-style:italic;font-weight:400}
-.cf-clin{border-top:.5px solid var(--bd);padding-top:3px;display:none;flex-direction:column;gap:1px}
+.cf-clin{border-top:.5px solid var(--bd);padding-top:5px;display:none;flex-direction:column;gap:1px}
 .cf-clin.show{display:flex}
 .cf-clinprov{font-size:9px;color:var(--tx);font-weight:600}
 .cf-sigline{border-bottom:.5px solid var(--tx);margin:5px 0 1px}
 .cf-siglbl{font-size:3.8px;color:var(--mu);text-align:center}
-.cf-ft{background:var(--tl);padding:2.5px 8px;font-size:5px;color:var(--td);text-align:center;font-style:italic;line-height:1.3;flex-shrink:0}
+.cf-ft{background:var(--tl);padding:2.5px 8px;font-size:5.5px;color:var(--td);text-align:center;font-style:italic;line-height:1.3;flex-shrink:0}
 .cb-hd{background:var(--teal);color:#fff;text-align:center;padding:4px 7px 3px;font-family:var(--fdisp);font-size:6.8px;font-weight:700;letter-spacing:.04em;flex-shrink:0}
 .cb-bd{padding:5px 8px;flex:1;overflow:hidden;display:flex;flex-direction:column;gap:3px}
 .cb-lbl{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--td);margin-bottom:1.5px}
@@ -202,7 +202,7 @@ canvas#sigc{border:1.5px solid var(--bd);border-radius:7px;background:#fff;curso
   </div>
   <div class="prevcol">
     <div class="panel">
-      <div class="pnl-hdr">Card Preview &mdash; Front &amp; Back</div>
+      <div class="pnl-hdr">Card Preview &amp; Front &amp; Back</div>
       <div class="pnl-body">
         <div class="cards2">
           <div class="cslot">
@@ -225,7 +225,7 @@ canvas#sigc{border:1.5px solid var(--bd);border-radius:7px;background:#fff;curso
                   <div class="cf-lbl">Clinician / Care Provider</div>
                   <div class="cf-clinprov" id="pvprov"></div>
                   <div class="cf-sigline"></div>
-                  <div class="cf-siglbl">Authorized Signature</div>
+
                 </div>
               </div>
               <div class="cf-ft">To prevent misunderstandings, please see reverse for symptoms.</div>
@@ -275,7 +275,7 @@ canvas#sigc{border:1.5px solid var(--bd);border-radius:7px;background:#fff;curso
         <div class="pclbl">Clinician / Care Provider</div>
         <div class="pc-clinprov" id="pcprov"></div>
         <div class="pc-sigline"></div>
-        <div class="pc-siglbl">Authorized Signature</div>
+
       </div>
     </div>
     <div class="pcf">To prevent misunderstandings, please see reverse for symptoms.</div>
